@@ -17,19 +17,30 @@ function weatherForecastUpdate() {
   // 今日の天気
   var todayTelop = response.forecasts[0].telop;
   // 今日の最低気温
-  var todayTemperatureMin = null;
-  // 基本的にnullで最低気温が表示されるときだけ更新する
+  var todayTemperatureMin;
+  // 最低気温が表示されるときだけ更新する
   if(response.forecasts[0].temperature.min != null){
     todayTemperatureMin = response.forecasts[0].temperature.min.celsius + "℃";
+  }else{
+    todayTemperatureMin = "---";
   }
+
   //今日の最高気温
-  var todayTemperatureMax = response.forecasts[0].temperature.max.celsius + "℃";
+  var todayTemperatureMax;
+  // 最高気温が表示されるときだけ更新する
+  if(response.forecasts[0].temperature.max != null){
+    todayTemperatureMax = response.forecasts[0].temperature.max.celsius + "℃";
+  }else{
+    todayTemperatureMax = "---";
+  }
+    
+  
   //今日の天気（画像）
   var todayWeatherImage = response.forecasts[0].image.url;
   //天気概況文
   var textInfomation = response.description.text;
   
-  var updateInformation = [cityId, publicTime, todayTelop, todayTemperatureMin, todayTemperatureMax, todayWeatherImage];
+  var updateInformation = [cityId, publicTime, todayTelop, todayTemperatureMin, todayTemperatureMax, todayWeatherImage, textInfomation];
  // Logger.log(updateInformation);
   spreadSheetUpdate(updateInformation);
   
@@ -47,17 +58,13 @@ function spreadSheetUpdate(updateInformation){
   var cityIdColumn = 2;
   
   // スプレッドシートにupdateInformationを上書きする
-  for(var row = 1; row <= lastRow; row++){
-    if(sheet.getRange(row, cityIdColumn) == updateInformation[0]){
-      Logger.log(sheet.getRange(row, cityIdColumn));
-      for(var column = 3; i <= lastColumn; j++){
-        Logger.log(updateInformation[column - 2]);
-        sheet.getRange(row, column).setValue(updateInformation[column - 2]);
-        
-      }
+  for(var i = 1; i <= lastRow; i++){
+    Logger.log(sheet.getRange(i, cityIdColumn).getValues());
+    if(sheet.getRange(i, cityIdColumn).getValues() == updateInformation[0]){
+      for(var j = 3; j <= lastColumn; j++){
+        Logger.log(updateInformation[j - 2]);
+        sheet.getRange(i, j).setValue(updateInformation[j - 2]);        
+      }break; 
     }
-    break;  //上書きする行は１つしかないため
   }
-  
-  Logger.log(row);
 }
