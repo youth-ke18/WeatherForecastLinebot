@@ -1,4 +1,5 @@
 function weatherForecastUpdate() {
+  //ver 0.5
   // プロジェクトのプロパティ
   var property = PropertiesService.getScriptProperties();
   
