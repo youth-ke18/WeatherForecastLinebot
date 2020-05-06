@@ -45,10 +45,9 @@ function weatherForecastUpdate() {
   //今日の天気（画像）
   var todayWeatherImage = response.forecasts[0].image.url;
   
-  //天気概況文
+  //明日の天気
   Logger.log(response.description.text);
-  var textInfomation = response.description.text.split("\n\n ")[1] + "\n" + 
-                       "明日は、" + response.description.text.split("\n\n")[3].split("日は、")[1];
+  var textInfomation = "明日は、" + response.description.text.split("\n\n")[3].split("日は、")[1];
   
   
   var updateInformation = [cityId, publicTime, todayTelop, todayTemperatureMin, todayTemperatureMax, todayWeatherImage, textInfomation];
