@@ -12,10 +12,17 @@ function weatherForecastUpdate() {
   
   // CityID
   var cityId = response.link.split("forecast/")[1];
+  
   // 予報の発表日時
-  var publicTime = response.publicTime;
+  var year = response.publicTime.split("-")[0] + "年";
+  var month = response.publicTime.split("-")[1] + "月";
+  var day = response.publicTime.split("-")[2].split("T")[0] + "日";
+  var time = response.publicTime.split("T")[1].split("+")[0];
+  var publicTime = year + month + day + time;
+  
   // 今日の天気
   var todayTelop = response.forecasts[0].telop;
+  
   // 今日の最低気温
   var todayTemperatureMin;
   // 最低気温が表示されるときだけ更新する
@@ -33,12 +40,14 @@ function weatherForecastUpdate() {
   }else{
     todayTemperatureMax = "---";
   }
-    
   
   //今日の天気（画像）
   var todayWeatherImage = response.forecasts[0].image.url;
-  //天気概況文
-  var textInfomation = response.description.text;
+  
+  //明日の天気
+  Logger.log(response.description.text);
+  var textInfomation = "明日は、" + response.description.text.split("\n\n")[3].split("日は、")[1];
+  
   
   var updateInformation = [cityId, publicTime, todayTelop, todayTemperatureMin, todayTemperatureMax, todayWeatherImage, textInfomation];
  // Logger.log(updateInformation);
